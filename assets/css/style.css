@@ -1,0 +1,27 @@
+.row {
+    height: 100px;
+    padding: 10px;
+    padding-top: 5px;
+}
+h1 {
+    padding: 50px;
+}
+h3:hover {
+    color: blue;    
+}
+h3 {
+    padding-top: 8px;
+}
+.container {
+    background: peachpuff;
+    margin-top: 20px;
+    height: 675px;
+}
+body {
+    background: blueviolet;
+}
+.start {
+    padding-bottom: 0px;
+    text-align: center;
+    width: 1140px;
+}
