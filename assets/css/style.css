@@ -10,10 +10,12 @@ h1 {
     font-size: 50px;
 }
 h3:hover {
-    color: blue;    
+    color: blue;
+    /* background: orange;     */
 }
 h3 {
     padding-top: 8px;
+    /* width: 100px; */
 }
 .container {
     background: peachpuff;
@@ -40,4 +42,8 @@ body {
 }
 #answer-block {
     visibility: hidden;
+
+}
+#question {
+    font-size: 30px;
 }
