@@ -39,6 +39,8 @@ body {
 }
 #question {
     visibility: hidden;
+    margin-bottom: 15px;
+    padding-top: 5px;
 }
 #answer-block {
     visibility: hidden;

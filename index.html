@@ -52,12 +52,9 @@
   </div>
   <!-- end HTML block -->
   <!-- *** begin Javascript *** -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type = "text/javascript">
-
 // begin program with variable declarations
-
 var timeLimit = 11;
 var intervalId;
 var started = false;
@@ -71,7 +68,12 @@ var trivia = [
     answers: ["The Yardbirds", "The Rolling Stones", "Pink Floyd", "Black Sabbath"],
     rightAnswer: "Pink Floyd"}];
 
-var imagePick = [];   
+var imagePick = []; // not sure if I'm using this
+var correctGuess = 0;
+var incorrectGuess = 0;
+var noGuess = 0;
+var win = false;
+
 
 // $(document).ready(function(){
 // ***** Begin program **********************************
@@ -83,56 +85,72 @@ $("#start-btn").click(function(){
   $("#timer").css("visibility", "visible");
   $("#question").css("visibility","visible");
   $("#answer-block").css("visibility","visible");
-  
+
+  // set up the first question and choices //  
   document.getElementById("question").innerHTML = trivia[0].question;
   document.getElementById("choice1").innerHTML = trivia[0].answers[0];
   document.getElementById("choice2").innerHTML = trivia[0].answers[1];
   document.getElementById("choice3").innerHTML = trivia[0].answers[2];
   document.getElementById("choice4").innerHTML = trivia[0].answers[3];
 
-
-  // set up the first question next //
-  var temp = ($("h3").data("pick-data", trivia[1].rightAnswer));
-  // document.getElementById("question").innerHTML = trivia[1].question;
-  // alert (temp);
-
-
-  $("#choice1").on("click", function() {
-    // document.getElementById("choice1").innerHTML = trivia[0].answers[0];
-    var temp = ($("h3").data("pick-data", trivia[0].answers[0]));
-    var pickValue = ($(this).data("pick-data"));
-    if (pickValue == trivia[0].rightAnswer) {
-      alert("You got a match");
-      console.log("The right answer is "+trivia[0].rightAnswer);
+  // check for each button clicked and compare with right answer
+  $("#choice1").on("click", function() { 
+    var temp = ($("h3").data("pick-data", trivia[0].answers[0])); //temp holds choice displayed
+    var pickValue = ($(this).data("pick-data"));  // pickValue is the data value of choice
+    
+    if (pickValue == trivia[0].rightAnswer) { // check if pickValue = "right answer"      
+      $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
+      $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");     
+      correctGuess++;
+      win == true;
+      stop(); // go to stop function
+    }
+    else {
+      incorrectGuess++;
+      $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
+      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>"); 
+      stop();
     } 
-    console.log(pickValue);
-    alert($("h3").data("pick-data"));  
     console.log("pickValue = "+pickValue); // this var returns corretly
   });
 
   $("#choice2").click(function(){
-    var temp = ($("h3").data("pick-data", trivia[0].answers[1]));
-    var pickValue = ($(this).data("pick-data"));
-    if (temp == trivia[0].rightAnswer) {
-      alert("You got a match");
+    var temp = ($("h3").data("pick-data", trivia[0].answers[1]));  // var temp holds the choice displayed
+    var pickValue = ($(this).data("pick-data"));   // pickValue is the data value of choice
+    
+    if (pickValue == trivia[0].rightAnswer) { // check if pickValue = "right answer"
+      $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
+      $("#timer").append("<h4>"+"You got it. Nice job!"+"<h4>");   
+      correctGuess++;
+      win == true;
+      stop();  // go to stop function
     }
-    alert($("h3").data("pick-data"));  
+    else {
+      incorrectGuess++;
+      $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");    
+      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");
+      stop();
+    }
     console.log("pickValue = "+pickValue); // this var returns correctly
   });
 
   $("#choice3").click(function(){
-    var temp = ($("h3").data("pick-data", trivia[0].answers[2]));
-
-    var pickValue = ($(this).data("pick-data"));
+    var temp = ($("h3").data("pick-data", trivia[0].answers[2])); // var temp holds the choice displayed
+    var pickValue = ($(this).data("pick-data")); // pickValue is the data value of choice
     
-    if (temp == trivia[0].rightAnswer) {
-      alert("You got a match");
+    if (pickValue == trivia[0].rightAnswer) {
+      $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>"); 
+      $("#timer").append("<h4>"+"You got it. Nice job!"+"<h4>"); 
+      correctGuess++;
+      win == true;
+      stop();  // go to stop funtion
     }
-
-    alert($("h3").data("pick-data")); 
-
-    temp = ($("h3").data("pick-data"));  // this line returns Roger Daltry
-    console.log(temp);
+    else {
+      incorrectGuess++;   
+      $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
+      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");    
+      stop();
+    } 
     console.log("pickValue = "+pickValue); // this var returns Roger Daltry 
   });
 
@@ -140,14 +158,22 @@ $("#start-btn").click(function(){
     var temp = ($("h3").data("pick-data", trivia[0].answers[3]));
     var pickValue = ($(this).data("pick-data"));
     if (temp == trivia[0].rightAnswer) {
-      alert("You got a match");
+      $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>"); 
+      $("#timer").append("<h4>"+"You got it. Nice job!"+"<h4>");      
+      correctGuess++;
+      win == true;
+      stop();  // go to stop function
+    
     }
-    alert($("h3").data("pick-data")); 
-    console.log("pickValue = "+pickValue); // this var returns 
+    else {
+      incorrectGuess++;
+      $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");    
+      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");
+      stop();
+    }
+    // console.log("pickValue = "+pickValue); // this var returns 
   });
-
-
-
+  
 
 
 started = true; 
@@ -155,20 +181,15 @@ triviaGame();
 
 });  // end onClick event // end of Program ?? 
 
-
-
 // ****** BEGIN FUNCTIONS BELOW ******
 function resetGame(){
 }
 
 function triviaGame(){
-
   if (started==true) {
       clearInterval(intervalId);
       intervalId = setInterval(decrement, 1000);
       console.log("does this print while clock is ticking?"); 
-
-    // setTimeout(displayImage, 1000);
   } // end if Loop
 } // end function triviaGame
 
@@ -177,23 +198,25 @@ function decrement() {
   $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>");
 
     if (timeLimit==0) {       
-    //   alert("Timer has stopped.");
+      // alert("Timer has stopped.");
+      $("#timer").html("<h2>"+"Time remaining: 0 Seconds"+"<h2>");    
+      $("#timer").append("<h4>"+"Time's up. Try a guess next time. Let's try another."+"<h4>");
+      console.log("just before stop function");
       stop();
     //   triviaGame();
     }
-  }  // end function decrement
+}  // end function decrement
 
 function stop() {
 //  Clears intervalId
 //  pass the name of the interval to the clearInterval function.
-  timeLimit = 10;
+  timeLimit = 11;
   clearInterval(intervalId);
-  $("#timer").html("<h2>"+"Time remaining: 10 Seconds"+"<h2>");
-  $("#timer").append("<h4>"+"Time's up. Try a guess next time. Let's try another."+"<h4>");
+
 
   setDelayRestart = setTimeout(triviaGame, 3000);
 //   setDelayRestart = setTimeout(function() {       
-  } // end function stop
+} // end function stop
 
 
 //   $("#show").click(function(){
