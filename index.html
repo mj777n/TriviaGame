@@ -249,12 +249,7 @@ started = true;
 
 triviaGame();
 
-
-
   // end onClick event // end of Program ?? 
-
-
-
 
 // ****** BEGIN FUNCTIONS BELOW ******
 
@@ -267,7 +262,7 @@ function triviaGame(){
 } // end function triviaGame
 
 function decrement() {
-  console.log("INSIDE THE decrement function")
+  // console.log("INSIDE THE decrement function")
   timeLimit --;
   $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>");
      
@@ -276,13 +271,11 @@ function decrement() {
       stop();
       console.log("removed displayPage call in decrement function");
       $("#timer").html("<h2>"+"Time remaining: 0 Seconds"+"<h2>");    
-      $("#timer").append("<h4>"+"Time's up. Try a guess next time. Let's try another."+"<h4>");
+      $("#timer").append("<h4>"+"Time's up. The answer is "+trivia[(questionCount-1)].rightAnswer+"<h4>");
       noGuess ++;
       displayPage();
     }       
 
-    //   
-    // }
 }  // end function decrement
 
 function stop() {
@@ -292,9 +285,7 @@ function stop() {
   timeLimit = 11;
   questionCount ++;
   clearInterval(intervalId); 
-  setDelayRestart = setTimeout(triviaGame, 1000);
-  console.log("Question count is: "+questionCount);
-//   setDelayRestart = setTimeout(function() {       
+  setDelayRestart = setTimeout(triviaGame, 2500);   
 } // end function stop
 
 });
