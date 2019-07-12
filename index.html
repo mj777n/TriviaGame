@@ -70,20 +70,20 @@ var trivia = [
     
     {question: 'What song includes the line "teenage wasteland?"', 
     answers: ["They're all wasted", "Smells like teen spirit", 
-               "Baba O'Riley", "Wasted days and wasted nights"],
+                "Wasted days and wasted nights","Baba O'Riley"],
     rightAnswer: "Baba O'Riley"},
   
     {question: "Which person is NOT a memeber of Pearl Jam?",
-     answers:  ["Eddie Vedder", "Chris Cornell", "Mike McCready", "Stone Gossard"], 
+     answers:  ["Chris Cornell","Eddie Vedder","Mike McCready","Stone Gossard"], 
      rightAnswer: "Chris Cornell"}, 
     
     {question:  "Which of these was NOT a Beatles song?",
-     answers:   ["Ticket to Ride", "Hello Goodbye", "Sargent Peppers", "Lady Madonna"],
+     answers:   ["Ticket to Ride","Hello Goodbye","Sargent Peppers","Lady Madonna"],
      rightAnswer:"Sargent Peppers"},
     
     {question:  "Which album has more copies sold?",
-     answers:   ['"Thriller" by Michael Jackson', '"Zeppelin IV" by Led Zeppelin',
-                '"Their Greatest Hits" by the Eagles','"The Wall" by Pink Floyd'],
+     answers:   ['"Their Greatest Hits" by the Eagles','"Thriller" by Michael Jackson', 
+                 '"Zeppelin IV" by Led Zeppelin','"The Wall" by Pink Floyd'],
     rightAnswer:'"Their Greatest Hits" by the Eagles'},
   
     {question:  "Who was NOT a member of the Jackson 5?",
@@ -147,7 +147,7 @@ console.log("question count var = "+questionCount);
     else {
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
-      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");   
+      $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");    
       stop();
       if (questionCount < trivia.length) {
         displayPage();
@@ -173,7 +173,7 @@ console.log("question count var = "+questionCount);
     else {
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");    
-      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");
+      $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");
       stop();
       if (questionCount < trivia.length) {
         displayPage();
@@ -200,7 +200,7 @@ console.log("question count var = "+questionCount);
     else {
       incorrectGuess++;   
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
-      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");    
+      $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");    
       stop();
       if (questionCount < trivia.length) {
         displayPage();
@@ -224,7 +224,7 @@ console.log("question count var = "+questionCount);
     else {
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");    
-      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");
+      $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");
       stop();
       if (questionCount < trivia.length) {
         displayPage();

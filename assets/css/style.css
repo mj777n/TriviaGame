@@ -1,3 +1,8 @@
+body {
+    background-image:url(memphis-colorful.png);
+    /* background-color: aquamarine; */
+    /* Background courtesy of subtlepattern.com */
+  }
 .row {
     height: 80px;
     padding: 10px;
@@ -17,7 +22,9 @@ h3 {
     /* width: 100px; */
 }
 .container {
-    background: peachpuff;
+    /* background: peachpuff; */
+    background-image:url(memphis-colorful.png);
+
     margin-top: 20px;
     height: 675px;
 }
