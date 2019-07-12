@@ -3,11 +3,10 @@
     padding: 10px;
     padding-top: 5px;
     padding-bottom: 10px;
-
 }
 h1 {
     padding: 50px;
-    font-size: 50px;
+    font-size: 100px;
 }
 h3:hover {
     color: blue;
@@ -41,6 +40,9 @@ body {
     visibility: hidden;
     margin-bottom: 15px;
     padding-top: 5px;
+    font-size: 35px;
+    line-height: 150%;
+    color: red; 
 }
 #answer-block {
     visibility: hidden;

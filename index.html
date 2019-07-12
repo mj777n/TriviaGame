@@ -66,13 +66,37 @@ var trivia = [
 
     {question: "Who released the album 'Dark side of the Moon?'",
     answers: ["The Yardbirds", "The Rolling Stones", "Pink Floyd", "Black Sabbath"],
-    rightAnswer: "Pink Floyd"}];
+    rightAnswer: "Pink Floyd"},
+    
+    {question: 'What song includes the line "teenage wasteland?"', 
+    answers: ["They're all wasted", "Smells like teen spirit", 
+               "Baba O'Riley", "Wasted days and wasted nights"],
+    rightAnswer: "Baba O'Riley"},
+  
+    {question: "Which person is NOT a memeber of Pearl Jam?",
+     answers:  ["Eddie Vedder", "Chris Cornell", "Mike McCready", "Stone Gossard"], 
+     rightAnswer: "Chris Cornell"}, 
+    
+    {question:  "Which of these was NOT a Beatles song?",
+     answers:   ["Ticket to Ride", "Hello Goodbye", "Sargent Peppers", "Lady Madonna"],
+     rightAnswer:"Sargent Peppers"},
+    
+    {question:  "Which album has more copies sold?",
+     answers:   ['"Thriller" by Michael Jackson', '"Zeppelin IV" by Led Zeppelin',
+                '"Their Greatest Hits" by the Eagles','"The Wall" by Pink Floyd'],
+    rightAnswer:'"Their Greatest Hits" by the Eagles'},
+  
+    {question:  "Who was NOT a member of the Jackson 5?",
+     answers:   ["Michael Jackson","Jackie Jackson","Jauan Jackson", "Tito Jackson"],
+    rightAnswer:"Jauan Jackson"},
+  ];
 
 var imagePick = []; // not sure if I'm using this
 var correctGuess = 0;
 var incorrectGuess = 0;
 var noGuess = 0;
 var win = false;
+questionCount = 0;
 
 
 // $(document).ready(function(){
@@ -85,145 +109,195 @@ $("#start-btn").click(function(){
   $("#timer").css("visibility", "visible");
   $("#question").css("visibility","visible");
   $("#answer-block").css("visibility","visible");
+ console.log ("before if timeLimit");
+ if (timeLimit == 0) {
+   questionCount++;
+   displayPage();
+ }
+ displayPage();
 
+function displayPage(){
+console.log("question count var = "+questionCount);
   // set up the first question and choices //  
-  document.getElementById("question").innerHTML = trivia[0].question;
-  document.getElementById("choice1").innerHTML = trivia[0].answers[0];
-  document.getElementById("choice2").innerHTML = trivia[0].answers[1];
-  document.getElementById("choice3").innerHTML = trivia[0].answers[2];
-  document.getElementById("choice4").innerHTML = trivia[0].answers[3];
-
+  document.getElementById("question").innerHTML = trivia[questionCount].question;
+  document.getElementById("choice1").innerHTML = trivia[questionCount].answers[0];
+  document.getElementById("choice2").innerHTML = trivia[questionCount].answers[1];
+  document.getElementById("choice3").innerHTML = trivia[questionCount].answers[2];
+  document.getElementById("choice4").innerHTML = trivia[questionCount].answers[3];
+}
+// console.log ("variable i = "+i);
+// console.log(trivia[i].answers);
+  // }  //end setupBoard function 
   // check for each button clicked and compare with right answer
-  $("#choice1").on("click", function() { 
-    var temp = ($("h3").data("pick-data", trivia[0].answers[0])); //temp holds choice displayed
+
+  $("#choice1").on("click", function() {
+    var temp = ($("h3").data("pick-data", trivia[questionCount].answers[0])); //temp holds choice displayed
     var pickValue = ($(this).data("pick-data"));  // pickValue is the data value of choice
     
-    if (pickValue == trivia[0].rightAnswer) { // check if pickValue = "right answer"      
+    if (pickValue == trivia[questionCount].rightAnswer) { // check if pickValue = "right answer"      
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
       $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");     
       correctGuess++;
       win == true;
       stop(); // go to stop function
+      if (questionCount < trivia.length) {
+        displayPage();
+      }
     }
     else {
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
-      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>"); 
+      $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");   
       stop();
+      if (questionCount < trivia.length) {
+        displayPage();
+      }
     } 
     console.log("pickValue = "+pickValue); // this var returns corretly
   });
 
   $("#choice2").click(function(){
-    var temp = ($("h3").data("pick-data", trivia[0].answers[1]));  // var temp holds the choice displayed
+    var temp = ($("h3").data("pick-data", trivia[questionCount].answers[1]));  // var temp holds the choice displayed
     var pickValue = ($(this).data("pick-data"));   // pickValue is the data value of choice
     
-    if (pickValue == trivia[0].rightAnswer) { // check if pickValue = "right answer"
+    if (pickValue == trivia[questionCount].rightAnswer) { // check if pickValue = "right answer"
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
-      $("#timer").append("<h4>"+"You got it. Nice job!"+"<h4>");   
+      $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");   
       correctGuess++;
       win == true;
       stop();  // go to stop function
+      if (questionCount < trivia.length) {
+        displayPage();
+      }
     }
     else {
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");    
       $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");
       stop();
+      if (questionCount < trivia.length) {
+        displayPage();
+      }
     }
+
     console.log("pickValue = "+pickValue); // this var returns correctly
   });
 
   $("#choice3").click(function(){
-    var temp = ($("h3").data("pick-data", trivia[0].answers[2])); // var temp holds the choice displayed
+    var temp = ($("h3").data("pick-data", trivia[questionCount].answers[2])); // var temp holds the choice displayed
     var pickValue = ($(this).data("pick-data")); // pickValue is the data value of choice
     
-    if (pickValue == trivia[0].rightAnswer) {
+    if (pickValue == trivia[questionCount].rightAnswer) {
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>"); 
-      $("#timer").append("<h4>"+"You got it. Nice job!"+"<h4>"); 
+      $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>"); 
       correctGuess++;
       win == true;
       stop();  // go to stop funtion
+      if (questionCount < trivia.length) {
+        displayPage();
+      }
     }
     else {
       incorrectGuess++;   
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
       $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");    
       stop();
+      if (questionCount < trivia.length) {
+        displayPage();
+      }
     } 
-    console.log("pickValue = "+pickValue); // this var returns Roger Daltry 
   });
 
   $("#choice4").click(function(){
-    var temp = ($("h3").data("pick-data", trivia[0].answers[3]));
+    var temp = ($("h3").data("pick-data", trivia[questionCount].answers[3]));
     var pickValue = ($(this).data("pick-data"));
-    if (temp == trivia[0].rightAnswer) {
+    if (pickValue == trivia[questionCount].rightAnswer) {
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>"); 
-      $("#timer").append("<h4>"+"You got it. Nice job!"+"<h4>");      
+      $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");      
       correctGuess++;
       win == true;
       stop();  // go to stop function
-    
+      if (questionCount < trivia.length) {
+        displayPage();
+      }   
     }
     else {
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");    
       $("#timer").append("<h4>"+"Sorry, that is incorrect"+"<h4>");
       stop();
+      if (questionCount < trivia.length) {
+        displayPage();
+      }
     }
-    // console.log("pickValue = "+pickValue); // this var returns 
+
+    console.log("pickValue = "+pickValue); // this var returns 
   });
-  
+
+
+  // If no click occurs (ie. Timer runs out)
 
 
 started = true; 
+// if (timeLimit==0) {       
+//     $("#timer").html("<h2>"+"Time remaining: 0 Seconds"+"<h2>");    
+//     $("#timer").append("<h4>"+"Time's up. Try a guess next time. Let's try another."+"<h4>");
+//     noGuess ++;
+//     stop();
+//     displayPage();
+//   }
+
 triviaGame();
 
-});  // end onClick event // end of Program ?? 
+
+
+  // end onClick event // end of Program ?? 
+
+
+
 
 // ****** BEGIN FUNCTIONS BELOW ******
-function resetGame(){
-}
 
 function triviaGame(){
   if (started==true) {
       clearInterval(intervalId);
       intervalId = setInterval(decrement, 1000);
-      console.log("does this print while clock is ticking?"); 
+      console.log("INSIDE THE triviaGame function"); 
   } // end if Loop
 } // end function triviaGame
 
 function decrement() {
+  console.log("INSIDE THE decrement function")
   timeLimit --;
   $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>");
-
-    if (timeLimit==0) {       
-      // alert("Timer has stopped.");
+     
+    if (timeLimit==0) {
+      console.log("timeLimit = 0");
+      stop();
+      console.log("removed displayPage call in decrement function");
       $("#timer").html("<h2>"+"Time remaining: 0 Seconds"+"<h2>");    
       $("#timer").append("<h4>"+"Time's up. Try a guess next time. Let's try another."+"<h4>");
-      console.log("just before stop function");
-      stop();
-    //   triviaGame();
-    }
+      noGuess ++;
+      displayPage();
+    }       
+
+    //   
+    // }
 }  // end function decrement
 
 function stop() {
+  console.log("INSIDE THE stop function")
 //  Clears intervalId
 //  pass the name of the interval to the clearInterval function.
   timeLimit = 11;
-  clearInterval(intervalId);
-
-
-  setDelayRestart = setTimeout(triviaGame, 3000);
+  questionCount ++;
+  clearInterval(intervalId); 
+  setDelayRestart = setTimeout(triviaGame, 1000);
+  console.log("Question count is: "+questionCount);
 //   setDelayRestart = setTimeout(function() {       
 } // end function stop
 
-
-//   $("#show").click(function(){
-//     $("p").show();
-//   });
-
-
+});
 </script>  
 </body>
 </html>
