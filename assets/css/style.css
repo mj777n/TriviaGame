@@ -47,14 +47,11 @@ body {
     visibility: hidden;
     margin-bottom: 15px;
     padding-top: 5px;
-    font-size: 35px;
-    line-height: 150%;
+    font-size: 37px;
+    line-height: 110%;
     color: red; 
 }
 #answer-block {
     visibility: hidden;
+}
 
-}
-#question {
-    font-size: 30px;
-}
