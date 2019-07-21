@@ -18,7 +18,7 @@
     
     <div class="row">
       <div class="col-lg-12">
-        <!-- div to display time remaining -->
+        <!-- div with full page layout (col-12) to display time remaining -->
         <div id="timer">
         </div>       
       </div>
@@ -27,7 +27,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div id="question">QUESTION GOES HERE
-        </div> <!-- div for question -->           
+        </div> <!-- div with full page layout (col-12) to display question -->           
       </div>
     </div>
 
@@ -36,20 +36,21 @@
       <button id="start-btn"><h2>Start</h2></button>
       <!-- </div> -->
     <!-- </div> -->
-
-    <div id="answer-block">
-      <div class="row">
-        <div class="col-lg-12">
-        <!-- div for question -->
-          <h3 id="choice1">Answer1</h3>
-          <h3 id="choice2">Answer2</h3>
-          <h3 id="choice3">Answer3</h3>
-          <h3 id="choice4">Answer4</h3>
-          <p id="yourPick"></p>
+    <div id="final-stats">
+      <div id="answer-block">
+        <div class="row">
+          <div class="col-lg-12">
+            <!-- div for question -->
+            <h3 id="choice1">Answer1</h3>
+            <h3 id="choice2">Answer2</h3>
+            <h3 id="choice3">Answer3</h3>
+            <h3 id="choice4">Answer4</h3>
+            <p id="yourPick"></p>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </div>  <!-- close "final-stats" div -->
+  </div>  <!-- close "container" div -->
   <!-- end HTML block -->
   <!-- *** begin Javascript *** -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -96,7 +97,9 @@ var correctGuess = 0;
 var incorrectGuess = 0;
 var noGuess = 0;
 var win = false;
+var started = true; 
 questionCount = 0;
+// var videoBox;
 
 
 // $(document).ready(function(){
@@ -109,15 +112,15 @@ $("#start-btn").click(function(){
   $("#timer").css("visibility", "visible");
   $("#question").css("visibility","visible");
   $("#answer-block").css("visibility","visible");
- console.log ("before if timeLimit");
- if (timeLimit == 0) {
-   questionCount++;
+
+//  if (timeLimit == 0) {
+//    questionCount++;
+//    displayPage(); 
+//  }
    displayPage();
- }
- displayPage();
+ 
 
 function displayPage(){
-console.log("question count var = "+questionCount);
   // set up the first question and choices //  
   document.getElementById("question").innerHTML = trivia[questionCount].question;
   document.getElementById("choice1").innerHTML = trivia[questionCount].answers[0];
@@ -125,22 +128,23 @@ console.log("question count var = "+questionCount);
   document.getElementById("choice3").innerHTML = trivia[questionCount].answers[2];
   document.getElementById("choice4").innerHTML = trivia[questionCount].answers[3];
 }
-// console.log ("variable i = "+i);
-// console.log(trivia[i].answers);
-  // }  //end setupBoard function 
-  // check for each button clicked and compare with right answer
+
+function showVideo() {
+// $("#answer-block").css("visibility","hidden");
+// alert("In the showVideo function");
+}
 
   $("#choice1").on("click", function() {
     var temp = ($("h3").data("pick-data", trivia[questionCount].answers[0])); //temp holds choice displayed
-    var pickValue = ($(this).data("pick-data"));  // pickValue is the data value of choice
+    var pickValue = ($(this).data("pick-data"));  // pickValue is the data value of choice   
     
-    if (pickValue == trivia[questionCount].rightAnswer) { // check if pickValue = "right answer"      
+    if (pickValue === trivia[questionCount].rightAnswer) { // check if pickValue = "right answer"      
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
       $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");     
       correctGuess++;
       win == true;
       stop(); // go to stop function
-      if (questionCount < trivia.length) {
+      if (questionCount < trivia.length) {  
         displayPage();
       }
     }
@@ -153,7 +157,6 @@ console.log("question count var = "+questionCount);
         displayPage();
       }
     } 
-    console.log("pickValue = "+pickValue); // this var returns corretly
   });
 
   $("#choice2").click(function(){
@@ -174,13 +177,27 @@ console.log("question count var = "+questionCount);
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");    
       $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");
+          
+      // $("#video-block").css("visibility","hidden");
+      // alert("In the showVideo function");
+      // videoBox = $("<video>");
+      // videoBox.addClass("#video-block");
+      // videoBox.attr("src", "https://youtu.be/oxHoLtrGNCA" );
+      // $("video-block").append(videoBox);
+
+      // video src = "https://youtu.be/oxHoLtrGNCA" width="250", height="250" 
+      
+    // var video= document.getElementById("vid");
+    // video.type="video/.mp4";
+    // video.src="+vid_url+";
+    // video.controls=true;
+    // video.autoplay=false;
+
       stop();
       if (questionCount < trivia.length) {
         displayPage();
       }
     }
-
-    console.log("pickValue = "+pickValue); // this var returns correctly
   });
 
   $("#choice3").click(function(){
@@ -230,23 +247,10 @@ console.log("question count var = "+questionCount);
         displayPage();
       }
     }
-
-    console.log("pickValue = "+pickValue); // this var returns 
   });
 
-
-  // If no click occurs (ie. Timer runs out)
-
-
-started = true; 
-// if (timeLimit==0) {       
-//     $("#timer").html("<h2>"+"Time remaining: 0 Seconds"+"<h2>");    
-//     $("#timer").append("<h4>"+"Time's up. Try a guess next time. Let's try another."+"<h4>");
-//     noGuess ++;
-//     stop();
-//     displayPage();
-//   }
-
+  // Begin program // with triviaGame function 
+  // start timers, then wait for clicks
 triviaGame();
 
   // end onClick event // end of Program ?? 
@@ -268,14 +272,16 @@ function decrement() {
      
     if (timeLimit==0) {
       console.log("timeLimit = 0");
+       noGuess ++;
       stop();
-      console.log("removed displayPage call in decrement function");
       $("#timer").html("<h2>"+"Time remaining: 0 Seconds"+"<h2>");    
       $("#timer").append("<h4>"+"Time's up. The answer is "+trivia[(questionCount-1)].rightAnswer+"<h4>");
-      noGuess ++;
-      displayPage();
+     
+      // console.log("Variable noGuess = "+noGuess);
+      if (started === true){
+        displayPage();
+      }
     }       
-
 }  // end function decrement
 
 function stop() {
@@ -284,11 +290,35 @@ function stop() {
 //  pass the name of the interval to the clearInterval function.
   timeLimit = 11;
   questionCount ++;
-  clearInterval(intervalId); 
-  setDelayRestart = setTimeout(triviaGame, 2500);   
+console.log("Question count = "+questionCount);
+  if (questionCount === trivia.length) {  // we've reached the end of the questions
+      // Change question to "All done ..."
+    $("#question").css("color","green");
+    $("#question").html("<b>All done, here's how you did!<b>");
+      // Re-use choice id's to display final stats; only 3 lines needed  
+    $("#choice4").css("visibility","hidden");
+    $("#choice1").empty();
+    $("#choice2").empty();
+    $("#choice3").empty();
+      // Display on dom, final stats of trivia game
+    $("#choice1").prepend("Correct Answers: "+correctGuess);
+    $("#choice2").html("Incorrect Answers: "+incorrectGuess);
+    $("#choice3").html("Unanswered: "+noGuess);
+    console.log("This is the end of the game/ stats are displayed");
+    started = false;
+    console.log(started); 
+    clearInterval(intervalId);
+    // setDelayRestart = setTimeout(triviaGame, 10000);
+  } else 
+  {
+    setDelayRestart = setTimeout(triviaGame, 2000); 
+    clearInterval(intervalId);    
+     console.log("after setDelayRestart");
+  }   
 } // end function stop
 
 });
-</script>  
+</script> 
+ 
 </body>
 </html>

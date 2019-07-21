@@ -10,13 +10,14 @@ body {
     padding-bottom: 10px;
 }
 h1 {
-    padding: 50px;
+    padding-top: 25px;
     font-size: 100px;
 }
 h3:hover {
     color: blue;
     /* background: orange;     */
 }
+
 h3 {
     padding-top: 8px;
     /* width: 100px; */
@@ -24,9 +25,8 @@ h3 {
 .container {
     /* background: peachpuff; */
     background-image:url(memphis-colorful.png);
-
     margin-top: 20px;
-    height: 675px;
+    height: 535px;
 }
 body {
     background: blueviolet;
@@ -43,13 +43,17 @@ body {
 #timer {
     visibility: hidden;
 }
+#final-stats {
+    font-size: 25px;
+}
 #question {
     visibility: hidden;
     margin-bottom: 15px;
-    margin-top: 20px;
+    margin-top: 10px;
     padding-top: 5px;
     font-size: 37px;
     line-height: 110%;
+    font-weight: bolder;
     color: red; 
 }
 #answer-block {
