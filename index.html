@@ -99,7 +99,7 @@ var trivia = [
     {question:  "Who was NOT a member of the Jackson 5?",
      answers:   ["Michael Jackson","Jackie Jackson","Jauan Jackson", "Tito Jackson"],
     rightAnswer:"Jauan Jackson",
-    clip: "assets/images/Jackson_Five_resized_200_200"},
+    clip: "assets/images/Jackson_Five_resized_200_200.gif"},
   ];
 
 var imagePick = []; // not sure if I'm using this
@@ -109,8 +109,6 @@ var noGuess = 0;
 var win = false;
 var started = true; 
 questionCount = 0;
-// var videoBox;
-
 
 // $(document).ready(function(){
 // ***** Begin program **********************************
@@ -123,24 +121,51 @@ $("#start-btn").click(function(){
   $("#question").css("visibility","visible");
   $("#answer-block").css("visibility","visible");
 
-   displayPage();
+  displayPage();
  
-
 function displayPage(){
+
+  if (questionCount === trivia.length) {
+// setDelayRestart = setTimeout(triviaGame, 4000); 
+// setDelayRestart = setTimeout(showVideo, 100);  
+    console.log("Showed the last video"); 
+    clearInterval(intervalId);  // STOP GAME FOR NOW  
+
+    // if (started == true) {
+      $("#image-block").empty();
+      // $("#answer-block").show();
+      $("#answer-block").css("visibility","visible");
+      $("#question").css("color","green");
+      $("#question").html("<b>All done, here's how you did!<b>");
+    // };
+      // Re-use choice-id's to display final stats; only 3 lines needed 
+      // Hide choice4 and empty 1-3
+    // $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>"); 
+    $("#timer").hide();
+    $("#choice4").css("visibility","hidden");
+    $("#choice1").empty();
+    $("#choice2").empty();
+    $("#choice3").empty();
+      // Display on dom, final stats of trivia game
+    $("#choice1").prepend("Correct Answers: "+correctGuess);
+    $("#choice2").html("Incorrect Answers: "+incorrectGuess);
+    $("#choice3").html("Unanswered: "+noGuess);
+}
+else {
   // set up the first question and choices //
   // $("#image-block").hide();
   $("#image-block").empty();
   $("#answer-block").show();
   $("#answer-block").css("visibility","visible");
   console.log("line after hiding css showing answer block");
+  console.log(started);
   document.getElementById("question").innerHTML = trivia[questionCount].question;
   document.getElementById("choice1").innerHTML = trivia[questionCount].answers[0];
   document.getElementById("choice2").innerHTML = trivia[questionCount].answers[1];
   document.getElementById("choice3").innerHTML = trivia[questionCount].answers[2];
   document.getElementById("choice4").innerHTML = trivia[questionCount].answers[3];
 }
-
-
+} // close displayPage function
 
   $("#choice1").on("click", function() {
     var temp = ($("h3").data("pick-data", trivia[questionCount].answers[0])); //temp holds choice displayed
@@ -172,7 +197,7 @@ function displayPage(){
         setDelayRestart = setTimeout(displayPage, 4000);
       }
     } 
-  });
+  });  // Close 'choice 1' block
 
   $("#choice2").click(function(){
     var temp = ($("h3").data("pick-data", trivia[questionCount].answers[1]));  // var temp holds the choice displayed
@@ -199,7 +224,7 @@ function displayPage(){
         setDelayRestart = setTimeout(displayPage, 4000);
       }
     }
-  });
+  });  // Close 'choice 2' block
 
   $("#choice3").click(function(){
     var temp = ($("h3").data("pick-data", trivia[questionCount].answers[2])); // var temp holds the choice displayed
@@ -226,7 +251,7 @@ function displayPage(){
         setDelayRestart = setTimeout(displayPage, 4000);
       }
     } 
-  });
+  });  // Close 'choice 3' block
 
   $("#choice4").click(function(){
     var temp = ($("h3").data("pick-data", trivia[questionCount].answers[3]));
@@ -251,19 +276,24 @@ function displayPage(){
         clearInterval(intervalId);
         setDelayRestart = setTimeout(displayPage, 4000);
       }
+      else {  // makes time for the last video to playout before displaying page
+        clearInterval(intervalId);
+        setDelayRestart = setTimeout(displayPage,4000);
+      }
     }
-  });
+  });  // Close 'choice 4' block
   // Begin program // with triviaGame function 
   // start timers, then wait for clicks
 triviaGame();
 
 // ****** BEGIN FUNCTIONS BELOW ******
 
-function triviaGame(){
+function triviaGame(){  // sets the timer clock 'timeLimit'
+
   if (started==true) {
+    console.log("Inside trviaGame if started=true");
       clearInterval(intervalId);
       intervalId = setInterval(decrement, 1000);
-      console.log("INSIDE THE triviaGame function"); 
   } // end if Loop
 } // end function triviaGame
 
@@ -284,36 +314,46 @@ function decrement() {
 }  // end function decrement
 
 function stop() {
-  console.log("INSIDE THE stop function")
 //  Clears intervalId
-//  pass the name of the interval to the clearInterval function.
+//  pass the name of the interval to the clearInterval function.  
   timeLimit = 11;
   questionCount ++;
-console.log("Question count = "+questionCount);
+
   if (questionCount === trivia.length) {  // we've reached the end of the questions
       // Display last video then after Timeout display final results
-
       // Change question to "All done ..."
-    $("#question").css("color","green");
-    $("#question").html("<b>All done, here's how you did!<b>");
-      // Re-use choice-id's to display final stats; only 3 lines needed 
-      // Hide choice4 and empty 1-3 
-    $("#choice4").css("visibility","hidden");
-    $("#choice1").empty();
-    $("#choice2").empty();
-    $("#choice3").empty();
-      // Display on dom, final stats of trivia game
-    $("#choice1").prepend("Correct Answers: "+correctGuess);
-    $("#choice2").html("Incorrect Answers: "+incorrectGuess);
-    $("#choice3").html("Unanswered: "+noGuess);
+    
+    started == false;
+    clearInterval(intervalId);  
+    showVideo();
+    console.log("line after showVideo");
+    setDelayRestart = setTimeout(displayPage, 4000);
+    // displayPage();
 
-    console.log("This is the end of the game/ stats are displayed");
-    started = false;
-    clearInterval(intervalId);
+    // // setDelayRestart = setTimeout(triviaGame, 4000); 
+    // setDelayRestart = setTimeout(showVideo, 100);  
+    // console.log("Showed the last video"); 
+      
+
+    // // if (started == true) {
+    //   $("#question").css("color","green");
+    //   $("#question").html("<b>All done, here's how you did!<b>");
+    // // };
+    //   // Re-use choice-id's to display final stats; only 3 lines needed 
+    //   // Hide choice4 and empty 1-3 
+    // $("#choice4").css("visibility","hidden");
+    // $("#choice1").empty();
+    // $("#choice2").empty();
+    // $("#choice3").empty();
+    //   // Display on dom, final stats of trivia game
+    // $("#choice1").prepend("Correct Answers: "+correctGuess);
+    // $("#choice2").html("Incorrect Answers: "+incorrectGuess);
+    // $("#choice3").html("Unanswered: "+noGuess);
+   
+    // clearInterval(intervalId);
     // setDelayRestart = setTimeout(triviaGame, 10000);
   } else 
   {
-    
     setDelayRestart = setTimeout(triviaGame, 4000); 
     clearInterval(intervalId);    
     showVideo();
