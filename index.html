@@ -36,6 +36,8 @@
       <button id="start-btn"><h2>Start</h2></button>
       <!-- </div> -->
     <!-- </div> -->
+    <div id="image-block">
+    </div>  
     <div id="final-stats">
       <div id="answer-block">
         <div class="row">
@@ -50,6 +52,7 @@
         </div>
       </div>
     </div>  <!-- close "final-stats" div -->
+    
   </div>  <!-- close "container" div -->
   <!-- end HTML block -->
   <!-- *** begin Javascript *** -->
@@ -63,33 +66,40 @@ var setDelayRestart;
 var trivia = [
     {question: "Who was the lead singer of Led Zeppelin?",
     answers: ["Robert Plant", "Jimmy Page", "Roger Daltry", "Eric Clapton"],
-    rightAnswer: "Robert Plant"},
+    rightAnswer: "Robert Plant",
+    clip: "assets/images/RB_resized_200_200.gif"},
 
     {question: "Who released the album 'Dark side of the Moon?'",
     answers: ["The Yardbirds", "The Rolling Stones", "Pink Floyd", "Black Sabbath"],
-    rightAnswer: "Pink Floyd"},
+    rightAnswer: "Pink Floyd",
+    clip: "assets/images/Pink_Floyd_resized_200_200.gif"},
     
     {question: 'What song includes the line "teenage wasteland?"', 
     answers: ["They're all wasted", "Smells like teen spirit", 
                 "Wasted days and wasted nights","Baba O'Riley"],
-    rightAnswer: "Baba O'Riley"},
+    rightAnswer: "Baba O'Riley",
+    clip: "assets/images/The_Who_resized_200_200.gif"},
   
     {question: "Which person is NOT a memeber of Pearl Jam?",
      answers:  ["Chris Cornell","Eddie Vedder","Mike McCready","Stone Gossard"], 
-     rightAnswer: "Chris Cornell"}, 
+     rightAnswer: "Chris Cornell",
+     clip: "assets/images/Pearl_Jam_resized_200_200.gif"}, 
     
     {question:  "Which of these was NOT a Beatles song?",
      answers:   ["Ticket to Ride","Hello Goodbye","Sargent Peppers","Lady Madonna"],
-     rightAnswer:"Sargent Peppers"},
+     rightAnswer:"Sargent Peppers",
+     clip: "assets/images/Beatles_resized_200_200.gif"},
     
     {question:  "Which album has more copies sold?",
      answers:   ['"Their Greatest Hits" by the Eagles','"Thriller" by Michael Jackson', 
                  '"Zeppelin IV" by Led Zeppelin','"The Wall" by Pink Floyd'],
-    rightAnswer:'"Their Greatest Hits" by the Eagles'},
+    rightAnswer:'"Their Greatest Hits" by the Eagles',
+    clip: "assets/images/Eagles_resized_200_200.gif"},
   
     {question:  "Who was NOT a member of the Jackson 5?",
      answers:   ["Michael Jackson","Jackie Jackson","Jauan Jackson", "Tito Jackson"],
-    rightAnswer:"Jauan Jackson"},
+    rightAnswer:"Jauan Jackson",
+    clip: "assets/images/Jackson_Five_resized_200_200"},
   ];
 
 var imagePick = []; // not sure if I'm using this
@@ -113,15 +123,16 @@ $("#start-btn").click(function(){
   $("#question").css("visibility","visible");
   $("#answer-block").css("visibility","visible");
 
-//  if (timeLimit == 0) {
-//    questionCount++;
-//    displayPage(); 
-//  }
    displayPage();
  
 
 function displayPage(){
-  // set up the first question and choices //  
+  // set up the first question and choices //
+  // $("#image-block").hide();
+  $("#image-block").empty();
+  $("#answer-block").show();
+  $("#answer-block").css("visibility","visible");
+  console.log("line after hiding css showing answer block");
   document.getElementById("question").innerHTML = trivia[questionCount].question;
   document.getElementById("choice1").innerHTML = trivia[questionCount].answers[0];
   document.getElementById("choice2").innerHTML = trivia[questionCount].answers[1];
@@ -129,32 +140,36 @@ function displayPage(){
   document.getElementById("choice4").innerHTML = trivia[questionCount].answers[3];
 }
 
-function showVideo() {
-// $("#answer-block").css("visibility","hidden");
-// alert("In the showVideo function");
-}
+
 
   $("#choice1").on("click", function() {
     var temp = ($("h3").data("pick-data", trivia[questionCount].answers[0])); //temp holds choice displayed
     var pickValue = ($(this).data("pick-data"));  // pickValue is the data value of choice   
     
     if (pickValue === trivia[questionCount].rightAnswer) { // check if pickValue = "right answer"      
+      correctGuess++;
+      win == true;      
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
       $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");     
-      correctGuess++;
-      win == true;
+      
       stop(); // go to stop function
-      if (questionCount < trivia.length) {  
-        displayPage();
+      if (questionCount < trivia.length) {
+        clearInterval(intervalId);
+        // setDelayRestart = setTimeout(triviaGame, 6000); 
+        setDelayRestart = setTimeout(displayPage, 5000);
+        
+        // displayPage();
       }
     }
     else {
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
       $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");    
+      
       stop();
       if (questionCount < trivia.length) {
-        displayPage();
+        clearInterval(intervalId);
+        setDelayRestart = setTimeout(displayPage, 4000);
       }
     } 
   });
@@ -170,32 +185,18 @@ function showVideo() {
       win == true;
       stop();  // go to stop function
       if (questionCount < trivia.length) {
-        displayPage();
+        clearInterval(intervalId);
+        setDelayRestart = setTimeout(displayPage, 4000);
       }
     }
     else {
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");    
-      $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");
-          
-      // $("#video-block").css("visibility","hidden");
-      // alert("In the showVideo function");
-      // videoBox = $("<video>");
-      // videoBox.addClass("#video-block");
-      // videoBox.attr("src", "https://youtu.be/oxHoLtrGNCA" );
-      // $("video-block").append(videoBox);
-
-      // video src = "https://youtu.be/oxHoLtrGNCA" width="250", height="250" 
-      
-    // var video= document.getElementById("vid");
-    // video.type="video/.mp4";
-    // video.src="+vid_url+";
-    // video.controls=true;
-    // video.autoplay=false;
-
+      $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");     
       stop();
       if (questionCount < trivia.length) {
-        displayPage();
+        clearInterval(intervalId);
+        setDelayRestart = setTimeout(displayPage, 4000);
       }
     }
   });
@@ -211,7 +212,8 @@ function showVideo() {
       win == true;
       stop();  // go to stop funtion
       if (questionCount < trivia.length) {
-        displayPage();
+        clearInterval(intervalId);
+        setDelayRestart = setTimeout(displayPage, 4000);
       }
     }
     else {
@@ -220,7 +222,8 @@ function showVideo() {
       $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");    
       stop();
       if (questionCount < trivia.length) {
-        displayPage();
+        clearInterval(intervalId);
+        setDelayRestart = setTimeout(displayPage, 4000);
       }
     } 
   });
@@ -235,7 +238,8 @@ function showVideo() {
       win == true;
       stop();  // go to stop function
       if (questionCount < trivia.length) {
-        displayPage();
+        clearInterval(intervalId);
+        setDelayRestart = setTimeout(displayPage, 4000);
       }   
     }
     else {
@@ -244,16 +248,14 @@ function showVideo() {
       $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");
       stop();
       if (questionCount < trivia.length) {
-        displayPage();
+        clearInterval(intervalId);
+        setDelayRestart = setTimeout(displayPage, 4000);
       }
     }
   });
-
   // Begin program // with triviaGame function 
   // start timers, then wait for clicks
 triviaGame();
-
-  // end onClick event // end of Program ?? 
 
 // ****** BEGIN FUNCTIONS BELOW ******
 
@@ -266,20 +268,17 @@ function triviaGame(){
 } // end function triviaGame
 
 function decrement() {
-  // console.log("INSIDE THE decrement function")
   timeLimit --;
-  $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>");
-     
+  $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>"); 
     if (timeLimit==0) {
-      console.log("timeLimit = 0");
-       noGuess ++;
+      noGuess ++;
       stop();
       $("#timer").html("<h2>"+"Time remaining: 0 Seconds"+"<h2>");    
       $("#timer").append("<h4>"+"Time's up. The answer is "+trivia[(questionCount-1)].rightAnswer+"<h4>");
      
-      // console.log("Variable noGuess = "+noGuess);
       if (started === true){
-        displayPage();
+        // displayPage();
+        setDelayRestart = setTimeout(displayPage, 4000);
       }
     }       
 }  // end function decrement
@@ -292,10 +291,13 @@ function stop() {
   questionCount ++;
 console.log("Question count = "+questionCount);
   if (questionCount === trivia.length) {  // we've reached the end of the questions
+      // Display last video then after Timeout display final results
+
       // Change question to "All done ..."
     $("#question").css("color","green");
     $("#question").html("<b>All done, here's how you did!<b>");
-      // Re-use choice id's to display final stats; only 3 lines needed  
+      // Re-use choice-id's to display final stats; only 3 lines needed 
+      // Hide choice4 and empty 1-3 
     $("#choice4").css("visibility","hidden");
     $("#choice1").empty();
     $("#choice2").empty();
@@ -304,21 +306,33 @@ console.log("Question count = "+questionCount);
     $("#choice1").prepend("Correct Answers: "+correctGuess);
     $("#choice2").html("Incorrect Answers: "+incorrectGuess);
     $("#choice3").html("Unanswered: "+noGuess);
+
     console.log("This is the end of the game/ stats are displayed");
     started = false;
-    console.log(started); 
     clearInterval(intervalId);
     // setDelayRestart = setTimeout(triviaGame, 10000);
   } else 
   {
-    setDelayRestart = setTimeout(triviaGame, 2000); 
+    
+    setDelayRestart = setTimeout(triviaGame, 4000); 
     clearInterval(intervalId);    
-     console.log("after setDelayRestart");
+    showVideo();
+    //  displayPage();
   }   
-} // end function stop
+} // end function stop **************
 
-});
-</script> 
- 
+function showVideo() {
+  $("#answer-block").css("visibility","hidden");
+  // $("#image-block").show();
+  $("#image-block").css("visibility", "visible");
+  imageDiv = $("<div id='image-block'>");
+  image = $("<img>"); 
+  image.attr("src", trivia[questionCount-1].clip);
+  image.attr("image-block", trivia[questionCount-1].clip);
+  imageDiv.append(image);
+  $("#image-block").prepend(image);
+}  // end showVideo function
+});  
+</script>
 </body>
 </html>
