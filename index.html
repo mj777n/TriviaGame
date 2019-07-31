@@ -19,35 +19,38 @@
     <div class="row">
       <div class="col-lg-12">
         <!-- div with full page layout (col-12) to display time remaining -->
-        <div id="timer">
+        <!-- div to display time remaining and playAgain button(Hidden) -->
+        <div id="playAgain">
+          <button id="playAgain-btn"><h2>Play Again?</h2></button>
+          <div id="timer">
+          </div>    
         </div>       
       </div>
     </div>
 
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-lg-12"> 
+        <!-- div with full page layout (col-12) to display question -->
         <div id="question">QUESTION GOES HERE
-        </div> <!-- div with full page layout (col-12) to display question -->           
+        </div>            
       </div>
+    </div>  
+
+    <button id="start-btn"><h2>Start</h2></button>
+
+    <div id="image-block">
     </div>
 
-    <!-- <div class="row"> -->
-      <!-- <div class="start-box text-center"> -->
-      <button id="start-btn"><h2>Start</h2></button>
-      <!-- </div> -->
-    <!-- </div> -->
-    <div id="image-block">
-    </div>  
     <div id="final-stats">
       <div id="answer-block">
         <div class="row">
           <div class="col-lg-12">
-            <!-- div for question -->
+            <!-- div for multiple answers -->
             <h3 id="choice1">Answer1</h3>
             <h3 id="choice2">Answer2</h3>
             <h3 id="choice3">Answer3</h3>
             <h3 id="choice4">Answer4</h3>
-            <p id="yourPick"></p>
+            <!-- <p id="yourPick"></p> -->
           </div>
         </div>
       </div>
@@ -64,6 +67,42 @@ var intervalId;
 var started = false;
 var setDelayRestart;
 var trivia = [
+    {question: "Which of the following did Mario creator Shigeru Miyamoto NOT design?",
+    answers: ["Donkey Kong","Kid Icarus","Excitebike","Legend of Zelda"],
+    rightAnswer: "Kid Icarus",
+    clip: "assets/images/Kid_Icarus_200_200.gif"},
+
+    {question: "What is the best-selling Nintendo handheld of all time?'",
+    answers: ["Nintendo Game Boy","Nintendo DS","Nintnedo Game Boy Advance","Nintendo 3DS"],
+    rightAnswer: "Nintendo DS",
+    clip: "assets/images/Nintendo_DS_200_200.gif"},
+    
+    {question: 'What is the first Nintendo game to feature Mario in it?"', 
+    answers: ["Mario Bros.","Tennis","Donkey Kong","Wrecking Crew"],
+    rightAnswer: "Donkey Kong",
+    clip: "assets/images/Donkey_Kong_200_200.gif"},
+  
+    {question: "What was Mario's original name?", 
+     answers:  ["Big Red","Jumpman","Luigi","Squatt' Sam"],
+     rightAnswer: "Jumpman",
+     clip: "assets/images/Jumpman_200_200.gif"}, 
+    
+    {question:  'What was the first Nintendo game to have a "save game" feature?',
+     answers:   ["Dragon Warrior","Final Fantasy","Metroid","Legend of Zelda"],
+     rightAnswer:"Legend of Zelda",
+     clip: "assets/images/Zelda_200_200.gif"},
+    
+    {question:  "Which Video Game Console has the most units sold All Time",
+     answers:   ["Xbox 360","Nintendo Game Boy","PlayStation 2","Nintendo DS"],
+    rightAnswer: "PlayStation 2",
+    clip: "assets/images/PS2_200_200.gif"},
+  
+    {question:  "What is the best selling (by $$$) video game of All Time?",
+     answers:   ["Wii Sports","Grand Theft Auto V","Tetris","Minecraft"],
+    rightAnswer:"Minecraft",
+    clip: "assets/images/Minecraft_200_200.gif"},
+];
+var trivia1 = [
     {question: "Who was the lead singer of Led Zeppelin?",
     answers: ["Robert Plant", "Jimmy Page", "Roger Daltry", "Eric Clapton"],
     rightAnswer: "Robert Plant",
@@ -100,101 +139,99 @@ var trivia = [
      answers:   ["Michael Jackson","Jackie Jackson","Jauan Jackson", "Tito Jackson"],
     rightAnswer:"Jauan Jackson",
     clip: "assets/images/Jackson_Five_resized_200_200.gif"},
-  ];
+];
 
-var imagePick = []; // not sure if I'm using this
+
 var correctGuess = 0;
 var incorrectGuess = 0;
 var noGuess = 0;
-var win = false;
 var started = true; 
 questionCount = 0;
 
-// $(document).ready(function(){
 // ***** Begin program **********************************
-// start with hiding all fields except h1 and start button
-//   on click, hide start button & display features of game  
-
+// Start with hiding all fields except h1 and start button
+// On click, hide start button & display features of game  
+$("#playAgain-btn").hide();
 $("#start-btn").click(function(){
   $("#start-btn").hide();
   $("#timer").css("visibility", "visible");
   $("#question").css("visibility","visible");
   $("#answer-block").css("visibility","visible");
 
-  displayPage();
+  // displayPage();
  
-function displayPage(){
+  function displayPage(){
 
-  if (questionCount === trivia.length) {
-// setDelayRestart = setTimeout(triviaGame, 4000); 
-// setDelayRestart = setTimeout(showVideo, 100);  
-    console.log("Showed the last video"); 
-    clearInterval(intervalId);  // STOP GAME FOR NOW  
-
-    // if (started == true) {
+    if (questionCount === trivia.length) { 
+      console.log("Showed the last video"); 
+      clearInterval(intervalId);  // STOP GAME FOR NOW  
+        // if (started == true) {
       $("#image-block").empty();
-      // $("#answer-block").show();
+        // $("#answer-block").show();
       $("#answer-block").css("visibility","visible");
       $("#question").css("color","green");
       $("#question").html("<b>All done, here's how you did!<b>");
-    // };
-      // Re-use choice-id's to display final stats; only 3 lines needed 
-      // Hide choice4 and empty 1-3
-    // $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>"); 
-    $("#timer").hide();
-    $("#choice4").css("visibility","hidden");
-    $("#choice1").empty();
-    $("#choice2").empty();
-    $("#choice3").empty();
-      // Display on dom, final stats of trivia game
-    $("#choice1").prepend("Correct Answers: "+correctGuess);
-    $("#choice2").html("Incorrect Answers: "+incorrectGuess);
-    $("#choice3").html("Unanswered: "+noGuess);
-}
-else {
-  // set up the first question and choices //
-  // $("#image-block").hide();
-  $("#image-block").empty();
-  $("#answer-block").show();
-  $("#answer-block").css("visibility","visible");
-  console.log("line after hiding css showing answer block");
-  console.log(started);
-  document.getElementById("question").innerHTML = trivia[questionCount].question;
-  document.getElementById("choice1").innerHTML = trivia[questionCount].answers[0];
-  document.getElementById("choice2").innerHTML = trivia[questionCount].answers[1];
-  document.getElementById("choice3").innerHTML = trivia[questionCount].answers[2];
-  document.getElementById("choice4").innerHTML = trivia[questionCount].answers[3];
-}
-} // close displayPage function
+        // };
+        // Re-use choice-id's to display final stats; only 3 lines needed 
+        // Hide choice4 and empty 1-3
+      // $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>"); 
+      $("#timer").hide();
+      $("#choice4").css("visibility","hidden");
+      $("#choice1").empty();
+      $("#choice2").empty();
+      $("#choice3").empty();
+        // Display on dom, final stats of trivia game
+      $("#choice1").prepend("Correct Answers: "+correctGuess);
+      $("#choice2").html("Incorrect Answers: "+incorrectGuess);
+      $("#choice3").html("Unanswered: "+noGuess);
+      $("#playAgain-btn").show();
+      console.log("started = "+started);
+
+    
+      // $("#playAgain-btn").click(resetPage());
+
+      $("#playAgain").click(function(){
+        
+      console.log("Hi");
+      resetPage()
+      });
+    }
+    else {  
+      // set up the first question and choices //
+      // $("#image-block").hide();
+    $("#image-block").empty();
+    $("#answer-block").show();
+    $("#answer-block").css("visibility","visible");
+    document.getElementById("question").innerHTML = trivia[questionCount].question;
+    document.getElementById("choice1").innerHTML = trivia[questionCount].answers[0];
+    document.getElementById("choice2").innerHTML = trivia[questionCount].answers[1];
+    document.getElementById("choice3").innerHTML = trivia[questionCount].answers[2];
+    document.getElementById("choice4").innerHTML = trivia[questionCount].answers[3];
+    }
+  } // close displayPage function
 
   $("#choice1").on("click", function() {
     var temp = ($("h3").data("pick-data", trivia[questionCount].answers[0])); //temp holds choice displayed
     var pickValue = ($(this).data("pick-data"));  // pickValue is the data value of choice   
     
     if (pickValue === trivia[questionCount].rightAnswer) { // check if pickValue = "right answer"      
-      correctGuess++;
-      win == true;      
+      correctGuess++;   
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
-      $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");     
-      
+      $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");          
       stop(); // go to stop function
       if (questionCount < trivia.length) {
         clearInterval(intervalId);
-        // setDelayRestart = setTimeout(triviaGame, 6000); 
         setDelayRestart = setTimeout(displayPage, 5000);
-        
-        // displayPage();
       }
     }
     else {
       incorrectGuess++;
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
-      $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");    
-      
+      $("#timer").append("<h4>"+"Nope, the correct answer is "+trivia[questionCount].rightAnswer+"<h4>");         
       stop();
       if (questionCount < trivia.length) {
         clearInterval(intervalId);
-        setDelayRestart = setTimeout(displayPage, 4000);
+        setDelayRestart = setTimeout(displayPage, 5000);
       }
     } 
   });  // Close 'choice 1' block
@@ -207,11 +244,10 @@ else {
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>");
       $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");   
       correctGuess++;
-      win == true;
       stop();  // go to stop function
       if (questionCount < trivia.length) {
         clearInterval(intervalId);
-        setDelayRestart = setTimeout(displayPage, 4000);
+        setDelayRestart = setTimeout(displayPage, 5000);
       }
     }
     else {
@@ -221,7 +257,7 @@ else {
       stop();
       if (questionCount < trivia.length) {
         clearInterval(intervalId);
-        setDelayRestart = setTimeout(displayPage, 4000);
+        setDelayRestart = setTimeout(displayPage, 5000);
       }
     }
   });  // Close 'choice 2' block
@@ -234,11 +270,10 @@ else {
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>"); 
       $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>"); 
       correctGuess++;
-      win == true;
       stop();  // go to stop funtion
       if (questionCount < trivia.length) {
         clearInterval(intervalId);
-        setDelayRestart = setTimeout(displayPage, 4000);
+        setDelayRestart = setTimeout(displayPage, 5000);
       }
     }
     else {
@@ -248,7 +283,7 @@ else {
       stop();
       if (questionCount < trivia.length) {
         clearInterval(intervalId);
-        setDelayRestart = setTimeout(displayPage, 4000);
+        setDelayRestart = setTimeout(displayPage, 5000);
       }
     } 
   });  // Close 'choice 3' block
@@ -256,15 +291,15 @@ else {
   $("#choice4").click(function(){
     var temp = ($("h3").data("pick-data", trivia[questionCount].answers[3]));
     var pickValue = ($(this).data("pick-data"));
+    
     if (pickValue == trivia[questionCount].rightAnswer) {
       $("#timer").html("<h2>"+"Time remaining: "+timeLimit+" Seconds"+"<h2>"); 
       $("#timer").append("<h2>"+"You got it. Nice job!"+"<h2>");      
       correctGuess++;
-      win == true;
       stop();  // go to stop function
       if (questionCount < trivia.length) {
         clearInterval(intervalId);
-        setDelayRestart = setTimeout(displayPage, 4000);
+        setDelayRestart = setTimeout(displayPage, 5000);
       }   
     }
     else {
@@ -274,105 +309,104 @@ else {
       stop();
       if (questionCount < trivia.length) {
         clearInterval(intervalId);
-        setDelayRestart = setTimeout(displayPage, 4000);
+        setDelayRestart = setTimeout(displayPage, 5000);
       }
       else {  // makes time for the last video to playout before displaying page
         clearInterval(intervalId);
-        setDelayRestart = setTimeout(displayPage,4000);
+        setDelayRestart = setTimeout(displayPage,5000);
       }
     }
   });  // Close 'choice 4' block
+
   // Begin program // with triviaGame function 
   // start timers, then wait for clicks
-triviaGame();
+  triviaGame();
 
-// ****** BEGIN FUNCTIONS BELOW ******
 
-function triviaGame(){  // sets the timer clock 'timeLimit'
+    // ****** BEGIN FUNCTIONS BELOW ******
 
-  if (started==true) {
-    console.log("Inside trviaGame if started=true");
+  function triviaGame(){  // sets the timer clock 'timeLimit'
+    if (started===true) {
+     
       clearInterval(intervalId);
       intervalId = setInterval(decrement, 1000);
-  } // end if Loop
-} // end function triviaGame
+       displayPage();
+    } // end if Loop
+  } // end function triviaGame
 
-function decrement() {
-  timeLimit --;
-  $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>"); 
-    if (timeLimit==0) {
-      noGuess ++;
-      stop();
-      $("#timer").html("<h2>"+"Time remaining: 0 Seconds"+"<h2>");    
-      $("#timer").append("<h4>"+"Time's up. The answer is "+trivia[(questionCount-1)].rightAnswer+"<h4>");
+  function decrement() {
+    timeLimit --;
+    $("#timer").html("<h2>"+"Time remaining: " + timeLimit + " Seconds"+"<h2>"); 
+      if (timeLimit==0) {
+        noGuess ++;
+        stop();
+        $("#timer").html("<h2>"+"Time remaining: 0 Seconds"+"<h2>");    
+        $("#timer").append("<h4>"+"Time's up. The answer is "+trivia[(questionCount-1)].rightAnswer+"<h4>");
      
-      if (started === true){
-        // displayPage();
-        setDelayRestart = setTimeout(displayPage, 4000);
-      }
-    }       
-}  // end function decrement
+        if (started === true){
+          // displayPage();
+          setDelayRestart = setTimeout(displayPage, 5000);
+        }
+      }       
+  }  // end function decrement
 
-function stop() {
-//  Clears intervalId
-//  pass the name of the interval to the clearInterval function.  
-  timeLimit = 11;
-  questionCount ++;
+  function stop() {
+  //  Clears intervalId
+  //  pass the name of the interval to the clearInterval function.  
+    timeLimit = 11;
+    questionCount ++;
 
-  if (questionCount === trivia.length) {  // we've reached the end of the questions
-      // Display last video then after Timeout display final results
-      // Change question to "All done ..."
-    
-    started == false;
-    clearInterval(intervalId);  
-    showVideo();
-    console.log("line after showVideo");
-    setDelayRestart = setTimeout(displayPage, 4000);
-    // displayPage();
+    if (questionCount === trivia.length) {  // we've reached the end of the questions
+        // Display last video then after Timeout display final results
+        // Change question text to "All done ..."   
+      started = false;
+      console.log("Line 315 started = "+started);
+      clearInterval(intervalId);  
+      showVideo();
+      setDelayRestart = setTimeout(displayPage, 5000);
+    } 
+    else {
+      setDelayRestart = setTimeout(triviaGame, 5000); 
+      clearInterval(intervalId);    
+      showVideo();
+    }   
+  } // end function stop **************
 
-    // // setDelayRestart = setTimeout(triviaGame, 4000); 
-    // setDelayRestart = setTimeout(showVideo, 100);  
-    // console.log("Showed the last video"); 
+  function showVideo() {
+    $("#answer-block").css("visibility","hidden");
+    $("#image-block").css("visibility", "visible");
+    imageDiv = $("<div id='image-block'>");
+    image = $("<img>"); 
+    image.attr("src", trivia[questionCount-1].clip);
+    image.attr("image-block", trivia[questionCount-1].clip);
+    imageDiv.append(image);
+    $("#image-block").prepend(image);
+  }  // end showVideo function
+
+  function resetPage(){
+    console.log ("Inside resetPage");
+      $("#timer").show();
+      $("#timer").empty();
+      $("#playAgain-btn").hide();
+        // $("#choice4").css("visibility","visible");
+      $("#question").css("color","red"); 
+      $("#question").empty();
+        // $("#answer-block").show();
+      $("#answer-block").css("visibility","hidden");
+      $("#choice4").css("visibility","visible");
+      questionCount = 0;
+      correctGuess = 0;
+      incorrectGuess = 0;
+      noGuess = 0;
+      timeLimit = 11;
+      started = true;
+      triviaGame();
+      // displayPage();
+
       
+  }
+});  // end main 'start' on click function
 
-    // // if (started == true) {
-    //   $("#question").css("color","green");
-    //   $("#question").html("<b>All done, here's how you did!<b>");
-    // // };
-    //   // Re-use choice-id's to display final stats; only 3 lines needed 
-    //   // Hide choice4 and empty 1-3 
-    // $("#choice4").css("visibility","hidden");
-    // $("#choice1").empty();
-    // $("#choice2").empty();
-    // $("#choice3").empty();
-    //   // Display on dom, final stats of trivia game
-    // $("#choice1").prepend("Correct Answers: "+correctGuess);
-    // $("#choice2").html("Incorrect Answers: "+incorrectGuess);
-    // $("#choice3").html("Unanswered: "+noGuess);
-   
-    // clearInterval(intervalId);
-    // setDelayRestart = setTimeout(triviaGame, 10000);
-  } else 
-  {
-    setDelayRestart = setTimeout(triviaGame, 4000); 
-    clearInterval(intervalId);    
-    showVideo();
-    //  displayPage();
-  }   
-} // end function stop **************
-
-function showVideo() {
-  $("#answer-block").css("visibility","hidden");
-  // $("#image-block").show();
-  $("#image-block").css("visibility", "visible");
-  imageDiv = $("<div id='image-block'>");
-  image = $("<img>"); 
-  image.attr("src", trivia[questionCount-1].clip);
-  image.attr("image-block", trivia[questionCount-1].clip);
-  imageDiv.append(image);
-  $("#image-block").prepend(image);
-}  // end showVideo function
-});  
 </script>
 </body>
 </html>

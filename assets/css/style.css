@@ -1,4 +1,4 @@
-body {
+    body {
     background-image:url(memphis-colorful.png);
     /* background-color: aquamarine; */
     /* Background courtesy of subtlepattern.com */
@@ -51,7 +51,7 @@ body {
     margin-bottom: 15px;
     margin-top: 10px;
     padding-top: 5px;
-    font-size: 37px;
+    font-size: 33px;
     line-height: 110%;
     font-weight: bolder;
     color: red; 
@@ -59,4 +59,12 @@ body {
 #answer-block {
     visibility: hidden;
 }
-
+#playAgain-btn {
+    background: pink;
+    color: blue;
+    margin-top: 15px;
+    padding-top: 2px;
+}
+#playAgain-btn:hover {
+    background: red
+}
