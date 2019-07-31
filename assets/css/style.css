@@ -12,6 +12,11 @@
 h1 {
     padding-top: 25px;
     font-size: 100px;
+    margin-bottom: 0px;
+}
+h2 {
+    margin-bottom: 0px;
+    color: green;
 }
 h3:hover {
     color: blue;
@@ -21,6 +26,9 @@ h3:hover {
 h3 {
     padding-top: 8px;
     /* width: 100px; */
+}
+h4 {
+    margin-bottom: 0px;
 }
 .container {
     /* background: peachpuff; */
@@ -49,8 +57,8 @@ body {
 #question {
     visibility: hidden;
     margin-bottom: 15px;
-    margin-top: 10px;
-    padding-top: 5px;
+    margin-top: 0px;
+    padding-top: 3px;
     font-size: 33px;
     line-height: 110%;
     font-weight: bolder;
@@ -68,3 +76,6 @@ body {
 #playAgain-btn:hover {
     background: red
 }
+img {
+    border: 2px solid black;
+}   
